@@ -93,7 +93,7 @@ def auth_return():
             return "Expected 1 primary email address. Got " + str(len(primaries))
 
         email = primaries[0]['value']
-        print(result['resourceName'])
+        # print(result['resourceName'])
 
         drive = build(
             'drive', 'v3',
