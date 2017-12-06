@@ -110,6 +110,6 @@ def auth_return():
             }
         ).execute()
 
-        return redirect("https://drive.google.com/drive/u/0/folders/" + request.args.get('state', teamDriveID) + "?authuser=" + email)
+        return redirect("https://drive.google.com/open?authuser=" + email + "&id=" + request.args.get('state', teamDriveID))
     except Exception as e:
         return "Error: " + str(e)
