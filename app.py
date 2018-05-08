@@ -1,4 +1,4 @@
-from flask import Flask, redirect, request, g
+from flask import Flask, redirect, request, g, escape
 from oauth2client.client import flow_from_clientsecrets, FlowExchangeError
 from oauth2client.service_account import ServiceAccountCredentials
 import httplib2
@@ -112,4 +112,4 @@ def auth_return():
 
         return redirect("https://drive.google.com/open?authuser=" + email + "&id=" + request.args.get('state', teamDriveID))
     except Exception as e:
-        return "Error: " + str(e)
+        return "Error: " + escape(str(e))
