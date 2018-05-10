@@ -6,6 +6,7 @@ from apiclient.discovery import build
 from googleapiclient.errors import HttpError
 from flask_login import login_required, LoginManager, current_user, UserMixin
 import requests
+import time
 # import psycopg2
 
 flow = flow_from_clientsecrets('private/oauth_client_secrets.json', scope="profile email", redirect_uri="https://betterinformatics.com/drive/auth_return")
@@ -151,6 +152,9 @@ def auth_return():
                 'email': email
             }).execute()
             isMember = True
+
+            # wait for 750 milliseconds to allow Google to update
+            time.sleep(0.750)
 
         return redirect("https://drive.google.com/open?authuser=" + email + "&id=" + request.args.get('state', teamDriveID))
     except Exception as e:
