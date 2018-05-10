@@ -116,7 +116,7 @@ def auth_return():
 
         isMember = False
 
-        # First check if they are a regular user
+        # First check if they are a user
         try:
             # We don't need to use the below result. If it does not throw anything
             # then they exist in this list
@@ -128,22 +128,7 @@ def auth_return():
             else:
                 raise
 
-        # Then check if they are a full user, if not a regular user.
-        # The reason this is second is to prevent 2x the requests for "regular users".
-        # Most users are "regular users".
-        if not isMember:
-            try:
-                # We don't need to use the below result. If it does not throw anything
-                # then they exist in this list
-                directory.members().get(groupKey="full-users@betterinformatics.com", memberKey=email).execute()
-                isMember = True
-            except HttpError as err:
-                if err.resp.status == 404:
-                    pass
-                else:
-                    raise
-
-        # They aren't a regular user or a full user, so make them a regular user.
+        # They aren't a  user, so make them a "regular" user (not full-users).
         if not isMember:
             directory.members().insert(groupKey="users@betterinformatics.com", body={
                 'status': 'ACTIVE',
