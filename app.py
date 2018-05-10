@@ -3,15 +3,22 @@ from oauth2client.client import flow_from_clientsecrets, FlowExchangeError
 from oauth2client.service_account import ServiceAccountCredentials
 import httplib2
 from apiclient.discovery import build
+from googleapiclient.errors import HttpError
 from flask_login import login_required, LoginManager, current_user, UserMixin
 import requests
 # import psycopg2
 
 flow = flow_from_clientsecrets('private/oauth_client_secrets.json', scope="profile email", redirect_uri="https://betterinformatics.com/drive/auth_return")
 
-drive_credentials = ServiceAccountCredentials.from_json_keyfile_name(
+# drive_credentials = ServiceAccountCredentials.from_json_keyfile_name(
+#     'private/drive_keyfile.json',
+#     scopes=['https://www.googleapis.com/auth/drive'])
+
+undelegated_group_credentials = ServiceAccountCredentials.from_json_keyfile_name(
     'private/drive_keyfile.json',
-    scopes='https://www.googleapis.com/auth/drive')
+    scopes=['https://www.googleapis.com/auth/admin.directory.group.member'])
+
+group_credentials = undelegated_group_credentials.create_delegated("qaisjp@betterinformatics.com")
 
 teamDriveID = '0AIKEqWfeWuQQUk9PVA'
 
@@ -93,22 +100,57 @@ def auth_return():
             return "Expected 1 primary email address. Got " + str(len(primaries))
 
         email = primaries[0]['value']
-        # print(result['resourceName'])
 
-        drive = build(
-            'drive', 'v3',
-            http=drive_credentials.authorize(httplib2.Http())
+        directory = build(
+            'admin', 'directory_v1',
+            http=group_credentials.authorize(httplib2.Http())
         )
 
-        result = drive.permissions().create(
-            fileId=teamDriveID,
-            supportsTeamDrives=True,
-            body={
-                'emailAddress': email,
-                'type': 'user',
-                'role': 'writer',
-            }
-        ).execute()
+        # Apparently hasMember does not work for non CompSoc org addresses
+        # result = directory.members().hasMember(groupKey="users@betterinformatics.com", memberKey=email).execute()
+
+        # If they aren't already a member, make them a member!
+        # if not result['isMember']:
+        #     .. proceed to insert directory ite
+
+        isMember = False
+
+        # First check if they are a regular user
+        try:
+            # We don't need to use the below result. If it does not throw anything
+            # then they exist in this list
+            directory.members().get(groupKey="users@betterinformatics.com", memberKey=email).execute()
+            isMember = True
+        except HttpError as err:
+            if err.resp.status == 404:
+                pass
+            else:
+                raise
+
+        # Then check if they are a full user, if not a regular user.
+        # The reason this is second is to prevent 2x the requests for "regular users".
+        # Most users are "regular users".
+        if not isMember:
+            try:
+                # We don't need to use the below result. If it does not throw anything
+                # then they exist in this list
+                directory.members().get(groupKey="full-users@betterinformatics.com", memberKey=email).execute()
+                isMember = True
+            except HttpError as err:
+                if err.resp.status == 404:
+                    pass
+                else:
+                    raise
+
+        # They aren't a regular user or a full user, so make them a regular user.
+        if not isMember:
+            directory.members().insert(groupKey="users@betterinformatics.com", body={
+                'status': 'ACTIVE',
+                'role': 'MEMBER',
+                'type': 'USER',
+                'email': email
+            }).execute()
+            isMember = True
 
         return redirect("https://drive.google.com/open?authuser=" + email + "&id=" + request.args.get('state', teamDriveID))
     except Exception as e:
