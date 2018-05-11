@@ -101,6 +101,7 @@ def auth_return():
             return "Expected 1 primary email address. Got " + str(len(primaries))
 
         email = primaries[0]['value']
+        url = "https://drive.google.com/open?authuser=" + email + "&id=" + request.args.get('state', teamDriveID)
 
         directory = build(
             'admin', 'directory_v1',
@@ -138,9 +139,8 @@ def auth_return():
             }).execute()
             isMember = True
 
-            # wait for 750 milliseconds to allow Google to update
-            time.sleep(0.750)
+            return render_template('redirect.html', url=url)
 
-        return redirect("https://drive.google.com/open?authuser=" + email + "&id=" + request.args.get('state', teamDriveID))
+        return redirect(url)
     except Exception as e:
         return render_template('error.html', message=escape(str(e)))
