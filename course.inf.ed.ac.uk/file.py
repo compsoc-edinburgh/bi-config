@@ -24,6 +24,8 @@ class Course(object):
         assert self.euclid_url == expected_euclid_url
 
         self.acronym = fields[2].text
+        self.level = int(fields[7].text)
+        self.credits = int(fields[8].text)
         self.year = int(fields[9].text)
         self.delivery = fields[10].text
         self.diet = fields[11].text
@@ -42,6 +44,8 @@ class Course(object):
             'euclid_code': self.euclid_code,
             'euclid_url': self.euclid_url,
             'acronym': self.acronym,
+            'level': self.level,
+            'credits': self.credits,
             'delivery': self.delivery,
             'year': int(self.year),
             'diet': self.diet,
@@ -49,13 +53,15 @@ class Course(object):
         }
 
     def __str__(self):
-        return "{name}\t\t\t\t{acronym} ({euclid_code})\t\t{delivery}\t\t{diet}\t\t{cw_exam_ratio}".format(
+        return "{name}\t\t\t\t{acronym} ({euclid_code})\t\t{delivery}\t\t{diet}\t\t{cw_exam_ratio}\t\tLevel {level}, {credits} credits".format(
             name=self.name,
             acronym=self.acronym,
             euclid_code=self.euclid_code,
             delivery=self.delivery,
             diet=self.diet,
-            cw_exam_ratio=self.cw_exam_ratio
+            cw_exam_ratio=self.cw_exam_ratio,
+            level=self.level,
+            credits=self.credits
         )
 
 
