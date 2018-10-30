@@ -35,6 +35,7 @@ app.config.from_object('config')
 
 login_manager = LoginManager(app)
 
+
 class User(UserMixin):
     def __init__(self, login_token, attrs):
         self.login_token = login_token
@@ -67,7 +68,9 @@ def get_user(request):
 @app.route('/drive')
 def main():
     if not current_user.is_authenticated:
-        return redirect('https://weblogin.inf.ed.ac.uk/cosign-bin/cosign.cgi?cosign-betterinformatics.com&https://betterinformatics.com'+request.full_path)
+        return redirect('https://weblogin.inf.ed.ac.uk/cosign-bin/cosign.cgi?'
+                        'cosign-betterinformatics.com&https://betterinformatics.com' +
+                        request.full_path)
 
     return redirect(flow.step1_get_authorize_url(state=request.args.get("next", teamDriveID)))
 

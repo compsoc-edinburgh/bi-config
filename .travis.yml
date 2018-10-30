@@ -8,4 +8,4 @@ install:
   - 'pipenv install --dev'
 
 script:
-  - 'flake8 .'
+  - 'pipenv run flake8 .'
