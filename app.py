@@ -55,7 +55,7 @@ def get_user(request):
             'ip': request.remote_addr,
         }
 
-        r = requests.get('http://localhost:6663/check/' + app.config['DICE_API_NAME'] + '/' +
+        r = requests.get('http://bi:6663/check/' + app.config['DICE_API_NAME'] + '/' +
                          app.config['DICE_API_KEY'],
                          params=payload)
         obj = r.json()
