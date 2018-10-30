@@ -1,15 +1,22 @@
-from flask import Flask, redirect, request, g, escape, render_template
-from oauth2client.client import flow_from_clientsecrets, FlowExchangeError
-from oauth2client.service_account import ServiceAccountCredentials
-import httplib2
 from apiclient.discovery import build
+
+from flask import Flask, escape, redirect, render_template, request
+
+from flask_login import LoginManager, UserMixin, current_user, login_required
+
 from googleapiclient.errors import HttpError
-from flask_login import login_required, LoginManager, current_user, UserMixin
+
+import httplib2
+
+from oauth2client.client import flow_from_clientsecrets
+from oauth2client.service_account import ServiceAccountCredentials
+
 import requests
-import time
 # import psycopg2
 
-flow = flow_from_clientsecrets('private/oauth_client_secrets.json', scope="profile email", redirect_uri="https://betterinformatics.com/drive/auth_return")
+flow = flow_from_clientsecrets('private/oauth_client_secrets.json',
+                               scope="profile email",
+                               redirect_uri="https://betterinformatics.com/drive/auth_return")
 
 # drive_credentials = ServiceAccountCredentials.from_json_keyfile_name(
 #     'private/drive_keyfile.json',
@@ -39,6 +46,7 @@ class User(UserMixin):
     def get_username(self):
         return self.Principal
 
+
 @login_manager.request_loader
 def get_user(request):
     if 'cosign-betterinformatics.com' in request.cookies:
@@ -47,7 +55,9 @@ def get_user(request):
             'ip': request.remote_addr,
         }
 
-        r = requests.get('http://localhost:6663/check/' + app.config['DICE_API_NAME'] + '/' + app.config['DICE_API_KEY'], params=payload)
+        r = requests.get('http://localhost:6663/check/' + app.config['DICE_API_NAME'] + '/' +
+                         app.config['DICE_API_KEY'],
+                         params=payload)
         obj = r.json()
 
         if obj['status'] == 'success':
@@ -75,6 +85,7 @@ def main():
 #         g.db = psycopg2.connect(app.config['DATABASE_URI'])
 #     return g.db
 
+
 @app.route('/drive/auth_return')
 @login_required
 def auth_return():
@@ -95,13 +106,15 @@ def auth_return():
 
         people = build('people', 'v1', http=http).people()
         result = people.get(resourceName='people/me', personFields='emailAddresses').execute()
-        primaries = list(filter(lambda x: x['metadata'].get('primary', False), result['emailAddresses']))
+        primaries = list(filter(lambda x: x['metadata'].get('primary', False),
+                                result['emailAddresses']))
 
         if len(primaries) != 1:
             return "Expected 1 primary email address. Got " + str(len(primaries))
 
         email = primaries[0]['value']
-        url = "https://drive.google.com/open?authuser=" + email + "&id=" + request.args.get('state', teamDriveID)
+        url = ("https://drive.google.com/open?authuser=" + email + "&id=" +
+               request.args.get('state', teamDriveID))
 
         directory = build(
             'admin', 'directory_v1',
@@ -109,7 +122,8 @@ def auth_return():
         )
 
         # Apparently hasMember does not work for non CompSoc org addresses
-        # result = directory.members().hasMember(groupKey="users@betterinformatics.com", memberKey=email).execute()
+        # result = directory.members().hasMember(groupKey="users@betterinformatics.com",
+        #                                        memberKey=email).execute()
 
         # If they aren't already a member, make them a member!
         # if not result['isMember']:
@@ -121,7 +135,8 @@ def auth_return():
         try:
             # We don't need to use the below result. If it does not throw anything
             # then they exist in this list
-            directory.members().get(groupKey="users@betterinformatics.com", memberKey=email).execute()
+            directory.members().get(groupKey="users@betterinformatics.com",
+                                    memberKey=email).execute()
             isMember = True
         except HttpError as err:
             if err.resp.status == 404:
