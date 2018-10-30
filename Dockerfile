@@ -1,16 +1,15 @@
 FROM python:3
 
 RUN apt-get update -y && \
-    apt-get install -y libldap2-dev libsasl2-dev
-RUN pip install pipenv
+    apt-get install -y libldap2-dev libsasl2-dev && \
+    pip install pipenv
 
 WORKDIR /code
-ADD ./Pipfile.lock /code/Pipfile.lock
-ADD ./Pipfile /code/Pipfile
+COPY ./Pipfile* /code/
 
 RUN pipenv install --system --deploy
 
-ADD . /code
+COPY . /code
 
 EXPOSE 9991
 
