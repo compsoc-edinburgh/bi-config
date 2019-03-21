@@ -1,4 +1,4 @@
-# bi-config
+# bi-docs
 
 This page outlines the architecture of Better Informatics.
 
