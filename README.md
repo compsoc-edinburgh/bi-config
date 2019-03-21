@@ -14,11 +14,14 @@ The main website is reliant on several moving parts, listed below:
 
 ### Platforms
 
-* Google Team Drive ([Better Informatics](https://drive.google.com/drive/u/0/folders/0AIKEqWfeWuQQUk9PVA)): this is generously hosted by [CompSoc](https://comp-soc.com) on their G Suite license
-    * Team Drives have a cap on how many users can be added as members. This cap is much higher if you add _groups_ as members. See below.
-* Google Groups ([Better Informatics](https://groups.google.com/a/betterinformatics.com/forum/#!forum/users)): anyone in this group has access to the Team Drive. This also serves as a mailing list.
+* Google Team Drive ([Better Informatics](https://drive.google.com/drive/u/0/folders/0AIKEqWfeWuQQUk9PVA)): this is generously hosted by [CompSoc](https://comp-soc.com) on their G Suite license.
+* Google Groups ([Better Informatics](https://groups.google.com/a/betterinformatics.com/forum/#!forum/users)): group members have access to the Team Drive. Also serves as a mailing list.
 
-**Caps**
+**Team Drive Caps**
+
+Team Drives have a cap on how many users can be added as members. This cap is much higher if you add _groups_ as members.
+
+We have hit the first cap, requiring us to use Google Groups.
 
 See "Team Drive membership" in [this article](https://support.google.com/a/answer/7338880?hl=en), copied below:
 
