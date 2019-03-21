@@ -10,7 +10,7 @@ The main website is reliant on several moving parts, listed below:
 * [cosign-webapi](https://github.com/qaisjp/cosign-webapi): an internal-only web API exposing Informatics' authentication system (CoSign weblogin) over an easy-to-use API. Written in Go.
 * [bi-drive-link](https://github.com/compsoc-edinburgh/bi-drive-link): a lightweight webapp to authenticate users against weblogin + Google, subsequently adding users to the Better Informatics Google Group (this gives them access to the team drive)
 * [updater](#updater): pulls the local GitHub repo whenever a commit occurs
-* nginx: reverse proxy. See [config](https://github.com/compsoc-edinburgh/bi-config/tree/master/nginx.conf.d).
+* [nginx](https://www.nginx.com/): web server and reverse proxy. Serves Jekyll build output, exams.is.ed.ac.uk CORS proxy, mapp, and other stuff. See [config](https://github.com/compsoc-edinburgh/bi-config/tree/master/nginx.conf.d) and [updater](#updater).
 
 ### Platforms
 
