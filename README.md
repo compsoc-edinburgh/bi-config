@@ -42,7 +42,7 @@ This is a Flask webapp triggered by a GitHub webhook. The webapp is exposed as a
 The [`./docker-build-watch.sh`](https://github.com/compsoc-edinburgh/betterinformatics/blob/master/docker-build-watch.sh) script is used to build updates.
 
 ```python
-from flask import Flask, redirect, request, g, escape, render_template
+from flask import Flask
 
 import os
 
