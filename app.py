@@ -159,7 +159,7 @@ def auth_return():
             isMember = True
 
             # Log this registration to disk, so we can store this in a database later
-            with open("registrations.csv", "a") as f:
+            with open("private/registrations.csv", "a") as f:
                 f.write(f"{current_user.get_username()},{email},{time.time()}")
 
             return render_template('redirect.html', url=url)
