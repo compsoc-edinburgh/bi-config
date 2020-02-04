@@ -7,12 +7,12 @@ from flask_login import LoginManager, UserMixin, current_user, login_required
 from googleapiclient.errors import HttpError
 
 import httplib2
+import time
 
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.service_account import ServiceAccountCredentials
 
 import requests
-import time
 # import psycopg2
 
 flow = flow_from_clientsecrets('private/oauth_client_secrets.json',
