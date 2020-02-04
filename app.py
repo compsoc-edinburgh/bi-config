@@ -12,6 +12,7 @@ from oauth2client.client import flow_from_clientsecrets
 from oauth2client.service_account import ServiceAccountCredentials
 
 import requests
+import time
 # import psycopg2
 
 flow = flow_from_clientsecrets('private/oauth_client_secrets.json',
@@ -156,6 +157,10 @@ def auth_return():
                 'email': email
             }).execute()
             isMember = True
+
+            # Log this registration to disk, so we can store this in a database later
+            with open("registrations.csv", "a") as f:
+                f.write(f"{current_user.get_username()},{email},{time.time()}")
 
             return render_template('redirect.html', url=url)
 
