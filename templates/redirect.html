@@ -1,6 +1,21 @@
+<!--
+    Developer note: if you want to remove this, please read the previous version of this file!
+
+    Previous version: https://github.com/compsoc-edinburgh/bi-drive-link/blob/a35d33a050cf378418ef2b08b54886a3205f239c/templates/redirect.html
+
+    The idea was to make the user wait 15s before sending them on their way,
+    so that Google has time to update their cache or something like that.
+
+    We don't need to say that anymore, because they will spend the time to update thier settings.
+
+    If you want to remove the "please change setting" message,
+    you will want to actually make them wait 15s.
+
+    -- qaisjp
+-->
+
 <html>
     <head>
-        <meta http-equiv="refresh" content="15; url={{ url }}">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Drive :: Better Informatics</title>
@@ -10,17 +25,79 @@ auto;max-width:650px;line-height:1.6;font-size:18px;color:#444;padding:0
         </style>
     </head>
     <body>
-        <header><h1>Redirecting in 15 seconds...</h1></header>
+        <header><h1>Welcome! First read this...</h1></header>
 
         <p>
             We've just added you to the Drive, but Google can be a bit slow.
         </p>
+
         <p>
-            If you see a page with a button asking you to request access, please don't click it!
-            Give it a minute and <strong>refresh the page</strong>.
+            Whilst Google updates, please read these two things:
+
+            <ul style="list-style-type: none;">
+                <li>
+                    <label>
+                        <input type="checkbox" class="needcheck">
+                        On the next page, if you see a button asking you to request access,
+                        please don't click it! Instead, <strong>click "Switch accounts"</strong> to select the
+                        account you logged in with.
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" class="needcheck">
+                        Also, please <a
+                            href="https://imgur.com/a/x3U6g2x"
+                            rel="noopener noreferrer nofollow"
+                            target="_blank">
+                            turn off the "Automatically converting files to Google Docs"</a>
+                        setting.
+                        <br>
+                        Every time someone opens a PDF Google automatically creates
+                        a Google Doc, and this clutters up our Drive a lot!
+                    </label>
+                </li>
+            </ul>
+
+            <button id="doneBtn" disabled onclick="location.href=`{{ url }}`"></button>
         </p>
+
         <p>
-            If it doesn't work, you can get in touch at admin@betterinformatics.com.
+            If you run into problems, you can get in touch at admin@betterinformatics.com.
         </p>
+
+        <script>
+            const undoneText = "Done (first checked the above checkboxes)";
+            const onChecked = () => {
+                const checks = document.querySelectorAll(".needcheck");
+                const button = document.querySelector("#doneBtn");
+
+                let i = 0;
+                for (const check of checks) {
+                    i++;
+                    if (!check.checked) {
+                        console.log(i, check.checked)
+                        button.setAttribute("disabled", "true");
+                        button.textContent = undoneText;
+                        return;
+                    }
+                }
+
+                button.removeAttribute("disabled");
+                button.textContent = "Done";
+            }
+
+            const main = () => {
+                const button = document.querySelector("#doneBtn");
+                button.textContent = undoneText;
+
+                const checks = document.querySelectorAll(".needcheck");
+                for (const check of checks) {
+                    check.addEventListener('change', onChecked);
+                }
+            }
+
+            window.addEventListener("load", main);
+        </script>
     </body>
 </html>
