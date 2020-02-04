@@ -160,7 +160,7 @@ def auth_return():
 
             # Log this registration to disk, so we can store this in a database later
             with open("private/registrations.csv", "a") as f:
-                f.write(f"{current_user.get_username()},{email},{time.time()}")
+                f.write(f"{current_user.get_username()},{email},{time.time()}\n")
 
             return render_template('redirect.html', url=url)
 
