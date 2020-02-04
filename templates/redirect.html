@@ -22,6 +22,11 @@
         <style type="text/css">body{margin:40px
 auto;max-width:650px;line-height:1.6;font-size:18px;color:#444;padding:0
 10px}h1,h2,h3{line-height:1.2}
+            .needcheck {
+                position: relative;
+                left: -25px;
+                margin-right: -20px;
+            }
         </style>
     </head>
     <body>
@@ -53,8 +58,12 @@ auto;max-width:650px;line-height:1.6;font-size:18px;color:#444;padding:0
                             turn off the "Automatically converting files to Google Docs"</a>
                         setting.
                         <br>
-                        Every time someone opens a PDF Google automatically creates
-                        a Google Doc, and this clutters up our Drive a lot!
+                        Every you open a PDF, it will automatically be converted to
+                        a Google Doc, and this clutters up our Drive
+                        <a
+                            href="https://hyperboleandahalf.blogspot.com/2010/04/alot-is-better-than-you-at-everything.html"
+                            style="text-decoration: none; color: inherit;"
+                        >alot!</a>
                     </label>
                 </li>
             </ul>
@@ -67,7 +76,7 @@ auto;max-width:650px;line-height:1.6;font-size:18px;color:#444;padding:0
         </p>
 
         <script>
-            const undoneText = "Done (first checked the above checkboxes)";
+            const undoneText = "Done (first tick the above checkboxes)";
             const onChecked = () => {
                 const checks = document.querySelectorAll(".needcheck");
                 const button = document.querySelector("#doneBtn");
