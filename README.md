@@ -2,6 +2,16 @@
 
 This page outlines the architecture of Better Informatics.
 
+## Hosting
+
+It is hosted on Tardis, and can only be hosted there because it needs to connect to `weblogin.inf.ed.ac.uk` which is firewalled. Informatics has opened a firewall hole to Tardis for us.
+
+There is a virtual machine that lives at `bi.tardis.ed.ac.uk`. You can SSH to it from within the Tardis network, but only if you have a user account on that VM.
+
+At the moment stuff runs as the user `qaisjp` inside a tmux session. If you have access to the VM, feel free to `sudo su qaisjp`, followed by `tmux a` to attach to the existing tmux session, and see how things work.
+
+A couple things are Docker-ised, but not everything. It's worth dockerising more things so that it's easier to maintain.
+
 ## Service: main website
 
 The main website is reliant on several moving parts, listed below:
