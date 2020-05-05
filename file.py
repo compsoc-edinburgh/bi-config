@@ -13,24 +13,33 @@ class Course(object):
 
     def __init__(self, soup):
         fields = soup.find_all("td")
-
+        #print(fields)
         self.name = fields[0].text
     
         euclid_ele = fields[1]
         self.euclid_code = euclid_ele.text
         self.euclid_url = fields[1].find("a", href=True)["href"] # not used
 
-        expected_euclid_url = "http://www.drps.ed.ac.uk/18-19/dpt/cx" + self.euclid_code.lower() + ".htm"
+        expected_euclid_url = "http://www.drps.ed.ac.uk/19-20/dpt/cx" + self.euclid_code.lower() + ".htm"
         assert self.euclid_url == expected_euclid_url
 
         self.acronym = fields[2].text
-        self.level = int(fields[7].text)
-        self.credits = int(fields[8].text)
-        self.year = int(fields[9].text)
-        self.delivery = fields[10].text
-        self.diet = fields[11].text
+        self.level = int(fields[9].text)
+        self.credits = int(fields[10].text)
+        self.year = int(fields[11].text)
+        self.delivery = fields[12].text
+        self.diet = fields[13].text
 
-        ratio = fields[12].text
+        if self.delivery == "S1":
+            self.delivery_ordinal = 1
+        elif self.delivery == "S2":
+            self.delivery_ordinal = 2
+        elif self.delivery == "YR":
+            self.delivery_ordinal = 3
+        else:
+            self.delivery_ordinal = 4
+
+        ratio = fields[14].text
         if ratio == "":
             self.cw_exam_ratio = None
         else:
@@ -47,6 +56,7 @@ class Course(object):
             'level': self.level,
             'credits': self.credits,
             'delivery': self.delivery,
+            'delivery_ordinal': self.delivery_ordinal,
             'year': int(self.year),
             'diet': self.diet,
             'cw_exam_ratio': self.cw_exam_ratio
