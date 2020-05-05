@@ -1,2 +1,2 @@
-PyYAML==3.12
+pyyaml>=5.3
 beautifulsoup4==4.6.0
