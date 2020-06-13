@@ -1,0 +1,9 @@
+version: '3'
+services:
+    web:
+        build: .
+        ports:
+           - "127.0.0.1:9991:9991"
+        volumes:
+            - ./config.py:/code/config.py
+            - ./private:/code/private

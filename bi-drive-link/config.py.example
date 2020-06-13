@@ -1,0 +1,12 @@
+DATABASES = {
+    'default': {
+        'engine': 'postgres',
+        'dsn': 'host=127.0.0.1 dbname=betterinformatics user=binf',
+        'migrations_dir': './migrations/',
+    },
+}
+
+DATABASE_URI = "dbname=betterinformatics user=binf"
+
+DICE_API_NAME = "<your-id-here>"
+DICE_API_KEY = "<your-code-here>"
