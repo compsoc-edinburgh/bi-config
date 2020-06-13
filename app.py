@@ -102,6 +102,10 @@ def auth_return():
     if not code:
         return "No code provided"
 
+    # Predefine the URL without the email address, in case an error occurs earlier
+    url = ("https://drive.google.com/open?id=" +
+               request.args.get('state', teamDriveID))
+
     try:
         credentials = flow.step2_exchange(code)
 
