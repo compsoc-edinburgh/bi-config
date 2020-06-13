@@ -166,4 +166,4 @@ def auth_return():
 
         return redirect(url)
     except Exception as e:
-        return render_template('error.html', message=escape(str(e)))
+        return render_template('error.html', message=escape(str(e)), url=url)
