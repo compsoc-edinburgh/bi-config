@@ -154,7 +154,7 @@ def main():
         data['list'] = courses_out
         data['last_update'] = lastUpdate
 
-        out += yaml.dump(data, default_flow_style=False)
+        out += yaml.safe_dump(data, default_flow_style=False)
 
         if yaml_target == None:
             print(out)
