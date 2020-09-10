@@ -175,6 +175,8 @@ def main():
         has_changed = not deep_equals(old_data['list'], data['list'])
         print(f"::set-output name=has_changed::{str(has_changed)}")
 
+        eprint(f"courses.yaml changed? {str(has_changed)}")
+
         with open(yaml_target, "w") as f:
             f.write(out)
 
