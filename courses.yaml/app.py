@@ -168,6 +168,10 @@ def main():
         with open(yaml_target, "r") as f:
             old_data = yaml.safe_load(f)
 
+        # Docs:
+        # - https://github.community/t/perform-next-job-if-specific-step-of-previous-job-was-success/17329/2?u=qaisjp
+        # - https://github.community/t/support-saving-environment-variables-between-steps/16230/2?u=qaisjp
+        # - https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-output-parameter
         has_changed = not deep_equals(old_data['list'], data['list'])
         print(f"::set-output name=has_changed::{str(has_changed)}")
 
