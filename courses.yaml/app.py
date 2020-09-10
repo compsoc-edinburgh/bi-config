@@ -20,7 +20,7 @@ class Course(object):
         self.euclid_code = euclid_ele.text
         self.euclid_url = fields[1].find("a", href=True)["href"] # not used
 
-        expected_euclid_url = "http://www.drps.ed.ac.uk/19-20/dpt/cx" + self.euclid_code.lower() + ".htm"
+        expected_euclid_url = "http://www.drps.ed.ac.uk/20-21/dpt/cx" + self.euclid_code.lower() + ".htm"
         assert self.euclid_url == expected_euclid_url
 
         self.acronym = fields[2].text
