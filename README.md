@@ -12,6 +12,18 @@ At the moment stuff runs as the user `qaisjp` inside a tmux session. If you have
 
 A couple things are Docker-ised, but not everything. It's worth dockerising more things so that it's easier to maintain.
 
+<details><summary>Stuff to run when the machine restarts</summary>
+    
+```
+- $ DIRECTORY : COMMAND_TO_RUN
+- $ dice-api : GIN_MODE=release config=config.yaml ./cosign-webapi
+- $ updater : run.py (virtualenv)
+- $ /var/www/betterinformatics : ./docker-build-watch
+- $ mapp-prod : dc up
+```
+
+</details>
+
 ## Service: main website
 
 The main website is reliant on several moving parts, listed below:
