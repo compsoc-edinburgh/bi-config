@@ -39,14 +39,23 @@ class Course(object):
     def __init__(self, soup):
         fields = soup.find_all("td")
         #print(fields)
-        self.name = fields[0].text
+        
+        url_elem = fields[0]
+        self.name = url_elem.text
+        
+        # get acronym from url
+        url_prefix = "https://course.inf.ed.ac.uk/"
+        url_str = url_eleme.find("a", href=True)["href"]
+        self.acronym = url_str[len(url_prefix):].upper()
 
         euclid_ele = fields[1]
         self.euclid_code = euclid_ele.text
         self.euclid_url = fields[1].find("a", href=True)["href"]
         check_euclid_url(self.euclid_code, self.euclid_url)
 
-        self.acronym = fields[2].text
+        # NOTE(qaisjp): the acronym column is sometimes wrong. ITO pls fix
+        # self.acronym = fields[2].text
+
         self.level = int(fields[9].text)
         self.credits = int(fields[10].text)
         self.year = int(fields[11].text)
