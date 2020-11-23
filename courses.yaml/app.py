@@ -45,7 +45,7 @@ class Course(object):
         
         # get acronym from url
         url_prefix = "https://course.inf.ed.ac.uk/"
-        url_str = url_eleme.find("a", href=True)["href"]
+        url_str = url_elem.find("a", href=True)["href"]
         self.acronym = url_str[len(url_prefix):].upper()
 
         euclid_ele = fields[1]
