@@ -54,7 +54,11 @@ class Course(object):
         check_euclid_url(self.euclid_code, self.euclid_url)
 
         # NOTE(qaisjp): the acronym column is sometimes wrong. ITO pls fix
-        # self.acronym = fields[2].text
+        # we prefer the real acronym, though, because it has correct capitalisation (e.g IoTSSC, not IOTSSC)
+        # we do this by comparing string lengths
+        sometimes_wrong_acronym = fields[2].text
+        if sometimes_wrong_acronym.upper() == self.acronym:
+            self.acronym = sometimes_wrong_acronym
 
         self.level = int(fields[9].text)
         self.credits = int(fields[10].text)
