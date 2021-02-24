@@ -15,11 +15,28 @@ A couple things are Docker-ised, but not everything. It's worth dockerising more
 <details><summary>Stuff to run when the machine restarts</summary>
     
 ```
-- $ DIRECTORY : COMMAND_TO_RUN
-- $ dice-api : GIN_MODE=release config=config.yaml ./cosign-webapi
-- $ updater : run.py (virtualenv)
-- $ /var/www/betterinformatics : ./docker-build-watch
-- $ mapp-prod : dc up
+# Run each of these in a tmux window under the qaisjp account
+
+# start cosign
+cd dice-api
+GIN_MODE=release config=config.yaml ./cosign-webapi
+
+# start auto fetching (via github webhook)
+cd updater
+. env/bin/activate
+./run.py
+
+# start auto buildig
+cd /var/www/betterinformatics
+./docker-build-watch.sh
+
+# start drive-link (/drive endpoint)
+cd drive-link
+dc up
+
+# start mapp
+cd mapp-prod
+dc up
 ```
 
 </details>
@@ -35,8 +52,8 @@ The main website is reliant on several moving parts, listed below:
 * [nginx](https://www.nginx.com/): web server and reverse proxy. Serves Jekyll build output, exams.is.ed.ac.uk CORS proxy, mapp, and other stuff. See [nginx.config.d] and [updater](#updater).
 
 [cosign-webapi]: https://github.com/qaisjp/gosign/tree/master/cmd/cosign-webapi
-[nginx.config.d]: https://github.com/compsoc-edinburgh/bi-config/tree/master/nginx.conf.d
-[drive-link]: https://github.com/compsoc-edinburgh/bi-config/tree/master/drive-link
+[nginx.config.d]: https://github.com/compsoc-edinburgh/bi-app/tree/master/nginx.conf.d
+[drive-link]: https://github.com/compsoc-edinburgh/bi-app/tree/master/drive-link
 
 ### Platforms
 
